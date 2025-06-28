@@ -53,6 +53,12 @@ cd $LAMBDA_DIR
 zip -r ../temp/get-user.zip getUser.js package.json node_modules/
 cd ..
 
+# Package the processSNS Lambda function
+echo "📦 Packaging processSNS Lambda..."
+cd $LAMBDA_DIR
+zip -r ../temp/processSNS.zip processSNS.js package.json node_modules/
+cd ..
+
 echo "✅ Lambda packages created"
 
 # Deploy CloudFormation stack
@@ -99,6 +105,12 @@ DYNAMODB_TABLE=$(aws cloudformation describe-stacks \
     --query 'Stacks[0].Outputs[?OutputKey==`DynamoDBTableName`].OutputValue' \
     --output text)
 
+SNS_TOPIC_ARN=$(aws cloudformation describe-stacks \
+    --stack-name $STACK_NAME \
+    --region $REGION \
+    --query 'Stacks[0].Outputs[?OutputKey==`SNSTopicArn`].OutputValue' \
+    --output text)
+
 echo "✅ Stack outputs retrieved"
 
 # Update Lambda functions with actual code
@@ -120,6 +132,12 @@ aws lambda update-function-code \
 aws lambda update-function-code \
     --function-name get-user-$ENVIRONMENT \
     --zip-file fileb://temp/get-user.zip \
+    --region $REGION
+
+# Update the processSNS Lambda
+aws lambda update-function-code \
+    --function-name processSNS-$ENVIRONMENT \
+    --zip-file fileb://temp/processSNS.zip \
     --region $REGION
 
 echo "✅ Lambda functions updated"
@@ -146,11 +164,20 @@ echo "🗄️ DynamoDB Tables:"
 echo "   Noise Monitor: $DYNAMODB_TABLE"
 echo "   Users: Users-$ENVIRONMENT"
 echo ""
+echo "📢 SNS Topic:"
+echo "   Topic ARN: $SNS_TOPIC_ARN"
+echo ""
 echo "📝 Next Steps:"
 echo "   1. Update the API endpoint in src/components/MiniDemo.js"
 echo "   2. Run 'npm install' in the root directory"
 echo "   3. Run 'npm start' to start the React app"
+echo "   4. For Raspberry Pi setup, use the SNS Topic ARN in config.json"
 echo ""
 echo "🔧 To update the API endpoint, replace 'YOUR_API_GATEWAY_URL' in MiniDemo.js with:"
 echo "   $PROCESS_ENDPOINT"
+echo ""
+echo "🍓 For Raspberry Pi setup:"
+echo "   1. Copy the raspberry-pi/ directory to your Pi"
+echo "   2. Update config.json with the SNS Topic ARN: $SNS_TOPIC_ARN"
+echo "   3. Follow the setup instructions in raspberry-pi/README.md"
 echo "" 

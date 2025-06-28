@@ -57,12 +57,6 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
-
-### 3. Start the Application
-```bash
-npm start
-```
-
 The app will open at `http://localhost:3000`
 
 ## Project Structure 📁

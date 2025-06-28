@@ -1,7 +1,7 @@
 // Configuration file for API endpoints and settings
 const config = {
     // API Gateway endpoints - update these after deployment
-    API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'YOUR_API_GATEWAY_URL',
+    API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'https://5hn9hxwix4.execute-api.us-east-1.amazonaws.com/dev',
 
     // Noise level thresholds (in decibels)
     THRESHOLDS: {

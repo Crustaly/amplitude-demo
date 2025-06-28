@@ -9,7 +9,7 @@
         "secret_access_key": "YOUR_AWS_SECRET_ACCESS_KEY",
         "region": "us-east-1",
         "sns_topic_arn": "arn:aws:sns:us-east-1:YOUR_ACCOUNT_ID:amplitude-noise-alerts",
-        "lambda_endpoint": "https://YOUR_API_GATEWAY_ID.execute-api.us-east-1.amazonaws.com/prod/noise"
+        "lambda_endpoint": "https://5hn9hxwix4.execute-api.us-east-1.amazonaws.com/dev/noise"
     },
     "monitoring": {
         "sample_rate": 44100,

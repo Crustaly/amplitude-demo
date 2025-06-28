@@ -61,7 +61,7 @@ chmod +x deploy.sh
 After deployment, update the API endpoint in `src/components/MiniDemo.js`:
 ```javascript
 // Replace 'YOUR_API_GATEWAY_URL' with the actual endpoint from deployment
-const response = await fetch('YOUR_API_GATEWAY_URL', {
+const response = await fetch('https://5hn9hxwix4.execute-api.us-east-1.amazonaws.com/dev/noise/process', {
   // ... rest of the code
 });
 ```

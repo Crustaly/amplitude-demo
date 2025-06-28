@@ -57,16 +57,8 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
-### 3. Update API Endpoint
-After deployment, update the API endpoint in `src/components/MiniDemo.js`:
-```javascript
-// Replace 'YOUR_API_GATEWAY_URL' with the actual endpoint from deployment
-const response = await fetch('YOUR_API_GATEWAY_URL', {
-  // ... rest of the code
-});
-```
 
-### 4. Start the Application
+### 3. Start the Application
 ```bash
 npm start
 ```

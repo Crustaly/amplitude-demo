@@ -1,0 +1,372 @@
+.mini-demo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.demo-header {
+    text-align: center;
+    color: white;
+}
+
+.demo-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.demo-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 400;
+}
+
+.demo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+.recording-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    padding: 3rem 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(29, 132, 181, 0.3);
+    transition: all 0.3s ease;
+}
+
+.recording-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    min-height: 300px;
+    justify-content: center;
+}
+
+.start-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.mic-icon-large {
+    color: #1D84B5;
+    opacity: 0.8;
+}
+
+.record-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #1D84B5, #53A2BE);
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(29, 132, 181, 0.3);
+}
+
+.record-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(29, 132, 181, 0.4);
+}
+
+.recording-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.recording-indicator {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 3px solid #ef4444;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.countdown-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ef4444;
+}
+
+.countdown-text {
+    font-size: 1rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.audio-level {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+}
+
+.level-bar {
+    width: 100%;
+    height: 12px;
+    background: #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.level-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.level-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.stop-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.stop-button:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+.processing-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e5e7eb;
+    border-top: 4px solid #1D84B5;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.processing-section p {
+    font-size: 1.1rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.result-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.result-icon {
+    font-size: 3rem;
+}
+
+.result-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.result-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.decibel-display {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.decibel-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #374151;
+}
+
+.decibel-unit {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.record-again-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #1D84B5;
+    color: white;
+    border: none;
+    border-radius: 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.record-again-button:hover {
+    background: #53A2BE;
+    transform: translateY(-1px);
+}
+
+.info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+}
+
+.info-card p {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.thresholds {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.threshold-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.threshold-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.threshold-color.acceptable {
+    background: #10b981;
+}
+
+.threshold-color.warning {
+    background: #f59e0b;
+}
+
+.threshold-color.violation {
+    background: #ef4444;
+}
+
+@media (max-width: 768px) {
+    .demo-header h1 {
+        font-size: 2rem;
+    }
+
+    .recording-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .countdown-number {
+        font-size: 2.5rem;
+    }
+
+    .decibel-value {
+        font-size: 2.5rem;
+    }
+}

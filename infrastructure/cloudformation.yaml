@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Noise Monitor Infrastructure - DynamoDB, Lambda, API Gateway'
+Description: 'Noise Monitor Infrastructure - DynamoDB, Lambda, API Gateway, SNS'
 
 Parameters:
   Environment:
@@ -9,6 +9,44 @@ Parameters:
     AllowedValues: ['dev', 'staging', 'prod']
 
 Resources:
+  # SNS Topic for Noise Alerts
+  NoiseAlertsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub 'amplitude-noise-alerts-${Environment}'
+      DisplayName: !Sub 'Amplitude Noise Alerts - ${Environment}'
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Purpose
+          Value: 'Noise monitoring alerts'
+
+  # SNS Topic Policy
+  NoiseAlertsTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref NoiseAlertsTopic
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action:
+              - sns:Publish
+            Resource: !Ref NoiseAlertsTopic
+          - Effect: Allow
+            Principal:
+              AWS: '*'
+            Action:
+              - sns:Subscribe
+              - sns:Receive
+            Resource: !Ref NoiseAlertsTopic
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+
   # DynamoDB Table
   NoiseMonitorTable:
     Type: AWS::DynamoDB::Table
@@ -88,6 +126,62 @@ Resources:
                   - !GetAtt NoiseMonitorTable.Arn
                   - !Sub '${NoiseMonitorTable.Arn}/index/*'
                   - !GetAtt UsersTable.Arn
+        - PolicyName: SNSPublish
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                Resource: !Ref NoiseAlertsTopic
+
+  # IAM Role for Raspberry Pi
+  RaspberryPiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'amplitude-raspberry-pi-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: '*'
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: AmplitudeAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                  - dynamodb:PutItem
+                Resource:
+                  - !Ref NoiseAlertsTopic
+                  - !GetAtt NoiseMonitorTable.Arn
+
+  # IAM User for Raspberry Pi (for access keys)
+  RaspberryPiUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Sub 'amplitude-raspberry-pi-${Environment}'
+      Policies:
+        - PolicyName: AmplitudeAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                  - dynamodb:PutItem
+                Resource:
+                  - !Ref NoiseAlertsTopic
+                  - !GetAtt NoiseMonitorTable.Arn
 
   # Lambda Function for Processing Noise Data
   NoiseMonitorLambda:
@@ -297,6 +391,18 @@ Outputs:
     Value: !Sub 'https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Environment}'
     Export:
       Name: !Sub '${AWS::StackName}-ApiGatewayUrl'
+
+  SNSTopicArn:
+    Description: 'SNS Topic ARN for noise alerts'
+    Value: !Ref NoiseAlertsTopic
+    Export:
+      Name: !Sub '${AWS::StackName}-SNSTopicArn'
+
+  SNSTopicName:
+    Description: 'SNS Topic Name'
+    Value: !Ref NoiseAlertsTopic
+    Export:
+      Name: !Sub '${AWS::StackName}-SNSTopicName'
 
   DynamoDBTableName:
     Description: 'DynamoDB Table Name'

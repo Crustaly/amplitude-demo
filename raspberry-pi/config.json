@@ -1,0 +1,24 @@
+{
+    "device": {
+        "id": "raspberry_pi_001",
+        "name": "Amplitude Noise Monitor",
+        "location": "Apartment 101"
+    },
+    "aws": {
+        "access_key_id": "YOUR_AWS_ACCESS_KEY_ID",
+        "secret_access_key": "YOUR_AWS_SECRET_ACCESS_KEY",
+        "region": "us-east-1",
+        "sns_topic_arn": "arn:aws:sns:us-east-1:YOUR_ACCOUNT_ID:amplitude-noise-alerts",
+        "lambda_endpoint": "https://YOUR_API_GATEWAY_ID.execute-api.us-east-1.amazonaws.com/prod/noise"
+    },
+    "monitoring": {
+        "sample_rate": 44100,
+        "chunk_size": 1024,
+        "channels": 1,
+        "thresholds": {
+            "acceptable": 60,
+            "warning": 70,
+            "violation": 80
+        }
+    }
+}
